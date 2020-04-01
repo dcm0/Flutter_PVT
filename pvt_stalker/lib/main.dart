@@ -88,11 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: (){},
             ),
             IconButton(icon: Icon(Icons.refresh),
-              onPressed: (){
-                //setState(() {
-                    _stalkerModel.coWorkers.shuffle();  
-                //});
-              },
+              onPressed: (){},
             ),
           ],
           ),
