@@ -1,4 +1,4 @@
-
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class CoWorker{
 
@@ -23,7 +23,9 @@ class StalkerModel{
   List<CoWorker> coWorkers;
   CoWorker myself;
   //home location
+  LatLng homeLocation;
   //work location
+  LatLng workLocation;
 
   StalkerModel(){
     myself = new CoWorker(username: 'Donny', location: WorkerLocations.unknown, lastUpdate: DateTime.now());

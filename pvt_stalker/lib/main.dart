@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'workerData.dart';
+import 'package:google_map_location_picker/google_map_location_picker.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+
 
 void main() => runApp(MyApp());
 
@@ -28,6 +32,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   StalkerModel _stalkerModel = new StalkerModel();
+  String apiKey = '_________________';
 
   void _incrementCounter() {
     setState(() {
@@ -88,7 +93,11 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: (){},
             ),
             IconButton(icon: Icon(Icons.refresh),
-              onPressed: (){},
+              onPressed: (){
+                setState(() {
+                  _stalkerModel.coWorkers.shuffle();  
+                });
+              },
             ),
           ],
           ),
@@ -98,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   //SETTINGS PAGE 
   void openPage(BuildContext context){
-
+      final _usernameController = TextEditingController();
       Navigator.push(context, MaterialPageRoute(
         builder: (BuildContext context) {
             return Scaffold(
@@ -110,8 +119,46 @@ class _MyHomePageState extends State<MyHomePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        'Settngs Go Here',
+                        'Set Username',
                       ),
+                      TextFormField(
+                          controller: _usernameController,
+                          autovalidate: true,
+                          decoration: const InputDecoration(
+                            icon: Icon(Icons.person),
+                            hintText: 'What do people call you?',
+                            labelText: 'Name *',
+                          ),
+                          validator: (String value) {
+                            if(value.isEmpty){
+                              return 'You need a username!';
+                            }
+                            return value.contains('@') ? 'Do not use the @ char.' : null;
+                          },
+                        ), 
+                        RaisedButton(
+                          onPressed: (){
+                             String username = _usernameController.text;
+                             _stalkerModel.myself.username = username;
+                          },
+                          child: Text('Save Username'),
+                        ), 
+                         RaisedButton(
+                          onPressed: () async{
+                             LocationResult result = await showLocationPicker(context, apiKey);                             
+                             //print(' Lat: ${result.latLng.latitude} Long: ${result.latLng.longitude}');
+                             _stalkerModel.homeLocation = result.latLng;
+                          },
+                          child: Text('Choose Home Location'),
+                        ), 
+                        RaisedButton(
+                          onPressed: () async{
+                             LocationResult result = await showLocationPicker(context, apiKey);                             
+                             //print(' Lat: ${result.latLng.latitude} Long: ${result.latLng.longitude}');
+                             _stalkerModel.workLocation = result.latLng;
+                          },
+                          child: Text('Choose Work Location'),
+                        )
                     ],
                   ),
                  )
