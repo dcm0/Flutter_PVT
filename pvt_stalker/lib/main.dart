@@ -108,6 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
   //SETTINGS PAGE 
   void openPage(BuildContext context){
       final _usernameController = TextEditingController();
+      _usernameController.text = _stalkerModel.myself.username;
       Navigator.push(context, MaterialPageRoute(
         builder: (BuildContext context) {
             return Scaffold(
@@ -140,6 +141,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           onPressed: (){
                              String username = _usernameController.text;
                              _stalkerModel.myself.username = username;
+                             _stalkerModel.saveData();
                           },
                           child: Text('Save Username'),
                         ), 
@@ -147,7 +149,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           onPressed: () async{
                              LocationResult result = await showLocationPicker(context, apiKey);                             
                              //print(' Lat: ${result.latLng.latitude} Long: ${result.latLng.longitude}');
-                             _stalkerModel.homeLocation = result.latLng;
+                             _stalkerModel.homeLocation = Location.fromLatLng(result.latLng);
                           },
                           child: Text('Choose Home Location'),
                         ), 
@@ -155,7 +157,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           onPressed: () async{
                              LocationResult result = await showLocationPicker(context, apiKey);                             
                              //print(' Lat: ${result.latLng.latitude} Long: ${result.latLng.longitude}');
-                             _stalkerModel.workLocation = result.latLng;
+                             _stalkerModel.workLocation = Location.fromLatLng(result.latLng);
                           },
                           child: Text('Choose Work Location'),
                         )
